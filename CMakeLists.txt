@@ -3,4 +3,4 @@ project(06_Crible)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(06_Crible main.cpp sieve.h input_validation.h)
+add_executable(06_Crible main.cpp sieve.h input_validation.h sieve.cpp input_validation.cpp)

@@ -19,7 +19,8 @@ void sieveRun(unsigned size);
  * @param nbCol
  * @return
  */
-void displaySieve(bool sieveTable[], size_t sieveTableSize, unsigned nbCol);
+void displaySieve(bool sieveTable[], std::size_t sieveTableSize, unsigned
+nbCol);
 /**
  *
  * @param sieveTable
@@ -28,8 +29,8 @@ void displaySieve(bool sieveTable[], size_t sieveTableSize, unsigned nbCol);
  * @param primeTableSize
  * @return
  */
-void sieve(bool sieveTable[], size_t sieveTableSize, unsigned primeTable[],
-           size_t primeTableSize);
+void sieve(bool sieveTable[], std::size_t sieveTableSize, unsigned primeTable[],
+           std::size_t primeTableSize);
 void displayResults();
 
 #endif //INC_06_CRIBLE_SIEVE_H
