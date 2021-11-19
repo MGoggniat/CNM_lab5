@@ -15,6 +15,7 @@ Compiler      : Mingw-w64 g++ 11.1.0
 #include <cstdlib>             // required for EXIT_SUCCESS
 #include <iostream>            // required for cout
 #include <limits>              // required for numeric_limits<...>
+#include <iomanip>
 #include "sieve.h"
 
 // Note that this library uses another naming convention that we will not use here
@@ -26,8 +27,10 @@ Compiler      : Mingw-w64 g++ 11.1.0
 using namespace std;
 
 int main() {
-	cout << "Hi, please enter a number between 1..100";
-   
+
+   cout << "Hi, please enter a number between 1..100";
+   sieveRun(100);
+
    //------------------------------------------------------
    // end of program
    cout << "Press ENTER to quit.";

@@ -29,8 +29,8 @@ nbCol);
  * @param primeTableSize
  * @return
  */
-void sieve(bool sieveTable[], std::size_t sieveTableSize, unsigned primeTable[],
-           std::size_t primeTableSize);
+void sieve(bool sieveTable[], std::size_t sieveTableSize, const unsigned
+primeTable[]);
 void displayResults();
 
 #endif //INC_06_CRIBLE_SIEVE_H
