@@ -19,7 +19,7 @@ void sieveRun(unsigned size);
  * @param nbCol
  * @return
  */
-void displaySieve(bool sieveTable[], std::size_t sieveTableSize, unsigned
+void displaySieve(const bool sieveTable[], std::size_t sieveTableSize, unsigned
 nbCol);
 /**
  *

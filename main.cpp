@@ -27,10 +27,15 @@ Compiler      : Mingw-w64 g++ 11.1.0
 using namespace std;
 
 int main() {
+	const unsigned MAX_NUM_OF_PRIME = 100;
+	unsigned numToCheckForPrime;
 
-   cout << "Hi, please enter a number between 1..100";
-   sieveRun(100);
+	cout << "Hi, please enter the max number you want to check for prime [1.."
+	     << MAX_NUM_OF_PRIME << "] :";
+	get_input(1u, MAX_NUM_OF_PRIME, numToCheckForPrime);
 
+	sieveRun(numToCheckForPrime);
+   
    //------------------------------------------------------
    // end of program
    cout << "Press ENTER to quit.";

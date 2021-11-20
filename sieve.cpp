@@ -1,13 +1,17 @@
 //
 // Created by migue on 18.11.2021.
 //
-#include <iostream>
-#include <iomanip>
-#include "sieve.h"
+#include <iomanip>   // Required for setw
+#include "sieve.h"   // Prototypes
+#include <iostream>  // Required for cout
 
 using namespace std;
 
 void sieveRun(unsigned size){
+   bool testTable[] = {false, false, false, false, true, false, true, true, false,
+							  false, false, false, false ,true, true, true, true};
+
+	displaySieve(testTable, sizeof(testTable) / sizeof(bool), 3);
 
    //----------------------------------------------------
    // Initialisation
@@ -65,8 +69,11 @@ void sieveRun(unsigned size){
    }
 }
 
-void displaySieve(bool sieveTable[], size_t sieveTableSize, unsigned nbCol){
-
+void displaySieve(const bool sieveTable[], size_t sieveTableSize, unsigned nbCol){
+	for (size_t i = 1ull; i <= sieveTableSize; ++i) {
+		cout << ' ' << (sieveTable[i - 1] ? 'O' : 'X');
+		if (i % nbCol == 0) cout << endl;
+	}
 }
 
 void sieve(bool sieveTable[], size_t sieveTableSize, const unsigned
