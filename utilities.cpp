@@ -10,9 +10,10 @@
 using namespace std;
 
 // We could imagine an overload for other data types
-void initArrayWithDefault(bool boolTable[], size_t arrSize, bool defaultValue) {
+void initArrayWithDefault(bool boolTable[], size_t arrSize, bool defaultValue
+=true) {
 	for (size_t i = 0ull; i < arrSize; ++i) {
-		boolTable[i] = true;
+		boolTable[i] = defaultValue;
 	}
 }
 

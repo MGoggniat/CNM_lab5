@@ -29,16 +29,21 @@ using namespace std;
 int main() {
 	const unsigned MAX_NUM_OF_PRIME = 100;
 	unsigned numToCheckForPrime;
+   const string WELCOME_MSG        = "Hi, please enter the max number you want"
+                                     " to check for prime";
+   const string PROGRAM_QUIT       = "Press ENTER to quit.";
 
-	cout << "Hi, please enter the max number you want to check for prime [1.."
+	cout << WELCOME_MSG << "[1.."
 	     << MAX_NUM_OF_PRIME << "] :";
 	get_input(1u, MAX_NUM_OF_PRIME, numToCheckForPrime);
 
-	sieveRun(numToCheckForPrime);
+   unsigned primeNumArray[MAX_NUM_OF_PRIME];
+   bool sieveArray[MAX_NUM_OF_PRIME];
+	sieveRun(numToCheckForPrime, primeNumArray, sieveArray);
    
    //------------------------------------------------------
    // end of program
-   cout << "Press ENTER to quit.";
+   cout << PROGRAM_QUIT;
    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // empty buffer
    return EXIT_SUCCESS;
 }

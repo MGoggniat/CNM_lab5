@@ -3,43 +3,49 @@
 //
 #include <iomanip>      // Required for setw
 #include <iostream>     // Required for cout
+#include <string>       // Required for const msgs
 #include "sieve.h"      // Prototypes
 #include "utilities.h"  // Required to set bool table to true
 
 using namespace std;
 
-void sieveRun(const unsigned size){
+void sieveRun(const unsigned arraySize, unsigned primeNumArray[], bool
+sieveArray[], unsigned nbCol, int colWidth){
+   const string INIT_MSG          = "Table initialization";
+   const string SIEVE_START_MSG   = "Sieving of the table";
+   const string RESULT_MSG_1      = "There are ";
+   const string RESULT_MSG_2      = " prime numbers from";
+   const string RESULT_MSG_3      = " to ";
+
    //----------------------------------------------------
    // Initialisation
    //----------------------------------------------------
-   unsigned primeNumArray[100];
-	initArrayWithAscendingOrder(primeNumArray, size, 1);
-
-   bool sieveArray[100];
-	initArrayWithDefault(sieveArray, size, true);
+	initArrayWithAscendingOrder(primeNumArray, arraySize, 1);
+	initArrayWithDefault(sieveArray, arraySize, true);
 
    //----------------------------------------------------
    // Display the table
    //----------------------------------------------------
-	cout << endl << "Table initialization : " << endl;
-	displayArray(sieveArray, size, 10u, 2, 'X', 'O');
+	cout << endl << INIT_MSG << " : " << endl;
+	displayArray(sieveArray, arraySize, nbCol, colWidth, 'X', 'O');
 	cout << endl;
 
    //----------------------------------------------------
    // Sieve
    //----------------------------------------------------
-	sieve(sieveArray, size, primeNumArray);
-	unsigned numOfPrimeNumbers = extractPrimeNumbers(sieveArray, size, primeNumArray);
+	sieve(sieveArray, arraySize, primeNumArray);
+	unsigned numOfPrimeNumbers = extractPrimeNumbers(sieveArray, arraySize, primeNumArray);
 
    //----------------------------------------------------
    // Display the sieve results
    //----------------------------------------------------
-	cout << endl << "Sieving of the table : " << endl;
-	displayArray(sieveArray, size, 10u, 2, 'X', 'O');
+	cout << endl << SIEVE_START_MSG << " : " << endl;
+	displayArray(sieveArray, arraySize, nbCol, colWidth, 'X', 'O');
 	cout << endl;
 
-	cout << endl << "There are " << numOfPrimeNumbers << " prime numbers from 1 to "
-	<< size << endl;
+	cout << endl << RESULT_MSG_1 << numOfPrimeNumbers << RESULT_MSG_2
+   << " 1 " << RESULT_MSG_3
+	<< arraySize << endl;
 	displayArray(primeNumArray, numOfPrimeNumbers, 5u, 4);
 	cout << endl;
 }

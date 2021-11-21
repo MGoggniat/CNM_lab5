@@ -12,7 +12,8 @@
  * @param size
  * @return
  */
-void sieveRun(unsigned size);
+void sieveRun(unsigned size, unsigned primeNumArray[], bool sieveArray[],
+              unsigned nbCol = 10u, int colWidth = 2);
 
 /**
  *
