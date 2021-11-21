@@ -4,6 +4,7 @@
 
 #ifndef INC_06_CRIBLE_SIEVE_H
 #define INC_06_CRIBLE_SIEVE_H
+
 #include <cstdlib>
 
 /**
@@ -12,26 +13,26 @@
  * @return
  */
 void sieveRun(unsigned size);
-/**
- *
- * @param sieveTable
- * @param sieveTableSize
- * @param nbCol
- * @return
- */
-void displaySieve(const bool sieveTable[], std::size_t sieveTableSize, unsigned
-nbCol);
+
 /**
  *
  * @param sieveTable
  * @param sieveTableSize
  * @param primeTable
- * @param primeTableSize
  * @return
  */
-void sieve(bool sieveTable[], std::size_t sieveTableSize, const unsigned
-primeTable[]);
-void displayResults();
+void sieve(bool sieveTable[], std::size_t sieveTableSize,
+			  const unsigned primeTable[]);
+
+/**
+ *
+ * @param sieveArray
+ * @param sieveArraySize
+ * @param primeArray
+ * @return
+ */
+unsigned extractPrimeNumbers(const bool sieveArray[], size_t sieveArraySize,
+									  unsigned primeArray[]);
 
 #endif //INC_06_CRIBLE_SIEVE_H
 

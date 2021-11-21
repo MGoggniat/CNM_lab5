@@ -4,6 +4,9 @@ File name     : input_validation.cpp
 Authors       : Émilie Bressoud, Leandro Saraiva Maia
 Creation date : 10.11.2021
 
+Changes made  :
+                * 21.11.2021 Translated the error messages to english
+
 Description   : Set of function to retrieve user input more easily. It handles
                 wrong values types and specific values ranges.
 
@@ -33,7 +36,7 @@ void get_input(const unsigned& min, const unsigned& max, unsigned & user_input) 
 		error = cin.fail() || user_input < min || user_input > max;
 
 		if (error) {
-			cout << "Veuillez entrer uniquement un nombre entre " << min << " et "
+			cout << "Please only enter a number between " << min << " and "
             << max << endl;
 			cin.clear();
 		}
@@ -53,8 +56,8 @@ void get_input(const string& min, const string& max, string& user_input) {
 		error = cin.fail() || size > 1ull || user_input < min || user_input > max ;
 
 		if (error) {
-			cout << "Veuillez entrer uniquement une lettre de "
-			     << min << " à " << max << endl;
+			cout << "Please only enter a letter from "
+			     << min << " to " << max << endl;
 			cin.clear();
 		}
 
@@ -75,7 +78,7 @@ void get_two_options_input(const string& opt1, const string& opt2,
 		        || !(user_input == opt1 || user_input == opt2);
 
 		if (error) {
-			cout << "Veuillez entrer soit " << opt1 << " ou " << opt2 << endl;
+			cout << "Pleaser enter either " << opt1 << " or " << opt2 << endl;
 			cin.clear();
 		}
 
