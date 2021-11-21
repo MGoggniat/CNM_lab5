@@ -15,6 +15,7 @@ Compiler      : Mingw-w64 g++ 11.1.0
 #include <cstdlib>             // required for EXIT_SUCCESS
 #include <iostream>            // required for cout
 #include <limits>              // required for numeric_limits<...>
+#include <string>
 #include <iomanip>
 #include "sieve.h"
 
