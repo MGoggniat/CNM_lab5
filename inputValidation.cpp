@@ -1,18 +1,18 @@
 /*
 -----------------------------------------------------------------------------------
 File name     : inputValidation.cpp
-Authors       : Leandro Saraiva Maia
+Author(s)     : Leandro Saraiva Maia
 Creation date : 22.11.2021
 
-Description   : See header comment of the .h file
+Description   : See header comment of inputValidation.h
 Remark(s)     :
 
 Compiler      : Mingw-w64 g++ 11.1.0
 -----------------------------------------------------------------------------------
 */
 
-#include <iostream> // required for cout
-#include <limits>   // used to empty the buffer (<streamsize>::max())
+#include <iostream>     // Required for cout
+#include <limits>       // Used to empty the buffer (<streamsize>::max())
 
 using namespace std;
 
