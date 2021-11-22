@@ -32,7 +32,7 @@ using namespace std;
 int main() {
 	//---------- Variables and constants ----------
 	const unsigned MIN_PRIME_UP_TO = 2u,
-                  MAX_PRIME_UP_TO = 100u;    // must be <= 100000
+                  MAX_PRIME_UP_TO = 100u; // >1000000 may cause memory issues
    const char     VALUE_FALSE     = 'X',
                   VALUE_TRUE      = 'O';
 	unsigned       primeNumArray[MAX_PRIME_UP_TO],
@@ -40,10 +40,10 @@ int main() {
 						numOfPrimeNumbers;
 	bool           sieveArray[MAX_PRIME_UP_TO];
 
-   const unsigned NB_COL            = 10u;
-   const int      COL_WIDTH         = 2;
+   const unsigned NB_COL          = 10u;
+   const int      COL_WIDTH       = 2;
 
-   const unsigned RESULT_NB_COL     = 5u;
+   const unsigned RESULT_NB_COL   = 5u;
 
 	//---------- User input ----------
 	cout << "Hi, this program computes the sieve of Eratosthenes to find prime "
