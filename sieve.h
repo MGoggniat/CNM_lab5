@@ -34,8 +34,7 @@ void sieveRun(unsigned findPrimeUpTo, unsigned primeNumArray[], bool sieveArray[
  * @param primeArray Array where prime number will be stored. For now, it is only
  * an array containing number in ascending number (starting at 1)
  */
-void sieve(bool sieveArray[], std::size_t sieveArraySize,
-			  const unsigned primeArray[]);
+void sieve(bool sieveArray[], std::size_t sieveArraySize);
 
 /**
  * Fill an array with the prime numbers that have been found using the sieve table
