@@ -32,14 +32,17 @@ using namespace std;
 
 int main() {
 	//---------- Variables and constants ----------
-	const unsigned MIN_PRIME_UP_TO = 2u, MAX_PRIME_UP_TO = 100u;
-	unsigned primeNumArray[MAX_PRIME_UP_TO], numToCheckForPrime;
-	bool sieveArray[MAX_PRIME_UP_TO];
+	const unsigned MIN_PRIME_UP_TO = 2u,
+                  MAX_PRIME_UP_TO = 100u;
+	unsigned       primeNumArray[MAX_PRIME_UP_TO],
+                  numToCheckForPrime;
+	bool           sieveArray[MAX_PRIME_UP_TO];
 
 	//---------- User input ----------
 	cout << "Hi, this program computes the sieve of Eratosthenes to find prime "
-	     << "numbers. Please enter the numbers you want to check for prime" <<  "["
-		  << MIN_PRIME_UP_TO << ".." << MAX_PRIME_UP_TO << "] :";
+	     << "numbers." << endl << "Please enter the numbers you want to check for"
+        << "prime [" << MIN_PRIME_UP_TO << ".." << MAX_PRIME_UP_TO << "] :";
+   // TODO: change everything
 	numToCheckForPrime = get_input(MIN_PRIME_UP_TO, MAX_PRIME_UP_TO);
 
 	//---------- Compute and display result of the sieve of Eratosthenes ----------

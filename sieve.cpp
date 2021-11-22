@@ -11,26 +11,26 @@ Compiler      : Mingw-w64 g++ 11.1.0
 -----------------------------------------------------------------------------------
 */
 
-#include <iomanip>      // Required for setw
-#include <iostream>     // Required for cout
-#include <string>       // Required for const msgs
-#include <cassert>
-#include "sieve.h"      // Prototypes
+#include <iomanip>       // Required for setw
+#include <iostream>      // Required for cout
+#include <string>        // Required for const msgs
+#include <cassert>       // Required for asserts
+#include "sieve.h"       // Prototypes
 #include "arrayManip.h"  // Required to set bool table to true
 
 using namespace std;
 
-void sieveRun(const unsigned findPrimeUpTo, unsigned primeNumArray[], bool
-sieveArray[], unsigned nbCol, int colWidth) {
+void sieveRun(const unsigned findPrimeUpTo, unsigned primeNumArray[],
+              bool sieveArray[], unsigned nbCol, int colWidth) {
 	// Check if array is not null
 	assert(primeNumArray != nullptr && sieveArray != nullptr);
-		
+
 	//---------- Initialization ----------
 	setArrayWithAscendingOrder(primeNumArray, findPrimeUpTo, 1);
 	setAllElementsInArray(sieveArray, findPrimeUpTo, true);
 
 	//---------- Display empty sieve table ----------
-	cout << endl << INIT_MSG << " : " << endl;
+	cout << endl << "Table initialization : " << endl;
 	displayArrayAsTable(sieveArray, findPrimeUpTo, nbCol, colWidth, 'X', 'O');
 	cout << endl;
 
@@ -40,12 +40,12 @@ sieveArray[], unsigned nbCol, int colWidth) {
 																	 primeNumArray);
 
 	//---------- Display the sieve table ----------
-	cout << endl << SIEVE_START_MSG << " : " << endl;
+	cout << endl << "Sieving of the table : " << endl;
 	displayArrayAsTable(sieveArray, findPrimeUpTo, nbCol, colWidth, 'X', 'O');
 	cout << endl;
 
 	//---------- Display the sieve results ----------
-	cout << endl << "There are " << numOfPrimeNumbers << " prime numbers up to "
+	cout << endl << numOfPrimeNumbers << " prime number(s) found up to "
 		  << findPrimeUpTo << endl;
 	displayArrayAsTable(primeNumArray, numOfPrimeNumbers, 5u, 4);
 	cout << endl;
@@ -70,7 +70,7 @@ void sieve(bool sieveArray[], size_t sieveArraySize){
 
          // Could not simplify this condition due to the loop resetting
          // already ignored numbers (false) to true
-         if(currentNumber % checkNumber == 0){
+         if(currentNumber % checkNumber == 0u){
             // set to false every multiple of checkNumber
 				sieveArray[j] = false;
          }
@@ -78,10 +78,10 @@ void sieve(bool sieveArray[], size_t sieveArraySize){
    }
 }
 
+// TODO: Comment function
 unsigned extractPrimeNumbers(const bool sieveArray[], size_t sieveArraySize,
 								     unsigned primeArray[]) {
-	unsigned numOfPrimeNumbers = 0;
-   // TODO: Comment function
+	unsigned numOfPrimeNumbers = 0u;
 	for (size_t i = 0ull; i < sieveArraySize; ++i) {
 		if (sieveArray[i]) {
 			primeArray[numOfPrimeNumbers++] = unsigned(i) + 1u;
