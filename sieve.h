@@ -19,14 +19,6 @@ Compiler      : Mingw-w64 g++ 11.1.0
 #include <cstdlib>   // Required for size_t
 
 /**
- * Entry point of the library. Handles the variables needed, the computing of the
- * algorithm and the display of the result
- * @param findPrimeUpTo Defines until which integer we search for prime numbers
- */
-void sieveRun(unsigned findPrimeUpTo, unsigned primeNumArray[], bool sieveArray[],
-              unsigned nbCol = 10u, int colWidth = 2);
-
-/**
  * Computes the algorithm of the sieve of Eratosthenes
  * @param sieveArray Bool array where each index+1 represents an natural number in
  * ascending order

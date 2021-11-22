@@ -27,6 +27,7 @@ Compiler      : Mingw-w64 g++ 11.1.0
 // Note that this library uses another naming convention that we will not use here
 // (snake_case instead of camelCase)
 #include "input_validation.h"  // Required to get input
+#include "arrayManip.h"
 
 using namespace std;
 
@@ -38,6 +39,9 @@ int main() {
                   numToCheckForPrime;
 	bool           sieveArray[MAX_PRIME_UP_TO];
 
+   const unsigned NB_COL      = 10u;
+   const int      COL_WIDTH   = 2;
+
 	//---------- User input ----------
 	cout << "Hi, this program computes the sieve of Eratosthenes to find prime "
 	     << "numbers." << endl << "Please enter the numbers you want to check for"
@@ -45,8 +49,30 @@ int main() {
    // TODO: change everything
 	numToCheckForPrime = get_input(MIN_PRIME_UP_TO, MAX_PRIME_UP_TO);
 
-	//---------- Compute and display result of the sieve of Eratosthenes ----------
-	sieveRun(numToCheckForPrime, primeNumArray, sieveArray);
+   //---------- Initialization ----------
+   setArrayWithAscendingOrder(primeNumArray, numToCheckForPrime, 1);
+   setAllElementsInArray(sieveArray, numToCheckForPrime, true);
+
+   //---------- Display empty sieve table ----------
+   cout << endl << "Table initialization : " << endl;
+   displayArrayAsTable(sieveArray, numToCheckForPrime, NB_COL, COL_WIDTH, 'X', 'O');
+   cout << endl;
+
+   //---------- Computes prime numbers with Eratosthenes sieve ----------
+   sieve(sieveArray, numToCheckForPrime);
+   unsigned numOfPrimeNumbers = extractPrimeNumbers(sieveArray, numToCheckForPrime,
+                                                    primeNumArray);
+
+   //---------- Display the sieve table ----------
+   cout << endl << "Sieving of the table : " << endl;
+   displayArrayAsTable(sieveArray, numToCheckForPrime, NB_COL, COL_WIDTH, 'X', 'O');
+   cout << endl;
+
+   //---------- Display the sieve results ----------
+   cout << endl << numOfPrimeNumbers << " prime number(s) found up to "
+        << numToCheckForPrime << endl;
+   displayArrayAsTable(primeNumArray, numOfPrimeNumbers, 5u, 4);
+   cout << endl;
 
    //---------- End of program ----------
    cout << "Press ENTER to quit.";
