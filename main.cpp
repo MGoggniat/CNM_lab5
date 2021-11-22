@@ -36,7 +36,8 @@ int main() {
    const char     VALUE_FALSE     = 'X',
                   VALUE_TRUE      = 'O';
 	unsigned       primeNumArray[MAX_PRIME_UP_TO],
-                  numToCheckForPrime;
+                  numToCheckForPrime,
+						numOfPrimeNumbers;
 	bool           sieveArray[MAX_PRIME_UP_TO];
 
    const unsigned NB_COL      = 10u;
@@ -46,7 +47,6 @@ int main() {
 	cout << "Hi, this program computes the sieve of Eratosthenes to find prime "
 	     << "numbers." << endl << "Please enter the numbers you want to check for"
         << "prime [" << MIN_PRIME_UP_TO << ".." << MAX_PRIME_UP_TO << "] :";
-   // TODO: change everything
 	numToCheckForPrime = getInput(MIN_PRIME_UP_TO, MAX_PRIME_UP_TO);
 
    //---------- Initialization ----------
@@ -61,8 +61,8 @@ int main() {
 
    //---------- Computes prime numbers with Eratosthenes sieve ----------
    sieve(sieveArray, numToCheckForPrime);
-   unsigned numOfPrimeNumbers = extractPrimeNumbers(sieveArray, numToCheckForPrime,
-                                                    primeNumArray);
+   numOfPrimeNumbers = extractPrimeNumbers(sieveArray, numToCheckForPrime,
+                                           primeNumArray);
 
    //---------- Display the sieve table ----------
    cout << endl << "Sieving of the table : " << endl;
