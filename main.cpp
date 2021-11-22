@@ -32,7 +32,7 @@ using namespace std;
 int main() {
 	//---------- Variables and constants ----------
 	const unsigned MIN_PRIME_UP_TO = 2u,
-                  MAX_PRIME_UP_TO = 10000u;    // must be <= 100000
+                  MAX_PRIME_UP_TO = 100u;    // must be <= 100000
    const char     VALUE_FALSE     = 'X',
                   VALUE_TRUE      = 'O';
 	unsigned       primeNumArray[MAX_PRIME_UP_TO],
