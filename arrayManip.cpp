@@ -21,7 +21,8 @@ Compiler      : Mingw-w64 g++ 11.1.0
 using namespace std;
 
 // We could imagine an overload for other data types
-void setAllElementsInArray(bool arrayToSet[], size_t arrSize, bool defaultValue) {
+void setAllElementsInArray(bool arrayToSet[], const size_t arrSize,
+									const bool defaultValue) {
    // Check if array is not null
    assert(arrayToSet != nullptr);
 	for (size_t i = 0ull; i < arrSize; ++i) {
@@ -29,33 +30,37 @@ void setAllElementsInArray(bool arrayToSet[], size_t arrSize, bool defaultValue)
 	}
 }
 
-void setArrayWithAscendingOrder(unsigned arrayToSet[], size_t arrSize,
-										  size_t startsAt = 0ull) {
+void setArrayWithAscendingOrder(unsigned arrayToSet[], const size_t arrSize,
+										  const size_t startsAt = 0ull) {
    // Check if array is not null
    assert(arrayToSet != nullptr);
 	for (size_t i = 0ull; i < arrSize; ++i) {
-		arrayToSet[i] = (unsigned)(i + startsAt);
+		arrayToSet[i] = unsigned(i + startsAt);
 	}
 }
 
 //colWidth is not an unsigned because there would be implicit conversion with setw
-void displayArrayAsTable(const unsigned array[], size_t arrSize, unsigned nbCol,
-								 int colWidth) {
+void displayArrayAsTable(const unsigned array[], const size_t arrSize,
+								 const unsigned nbCol, const int colWidth) {
    // Check if array is not null
    assert(array != nullptr);
 	for (size_t i = 0ull; i < arrSize; ++i) {
 		cout << setw(colWidth) << array[i];
-		if ((i+1ull) % (unsigned long long)nbCol == 0ull) cout << endl;
+		// Add new line on end of row
+		if ((i + 1ull) % (unsigned long long)nbCol == 0ull && i != arrSize - 1ull)
+			cout << endl;
 	}
 }
 
-void displayArrayAsTable(const bool array[], size_t arrSize, unsigned nbCol,
-								 int colWidth,
-								 char valueWhenFalse, char valueWhenTrue) {
+void displayArrayAsTable(const bool array[], const size_t arrSize,
+								 const unsigned nbCol, const int colWidth,
+								 const char valueWhenFalse, const char valueWhenTrue) {
    // Check if array is not null
    assert(array != nullptr);
 	for (size_t i = 0ull; i < arrSize; ++i) {
 		cout << setw(colWidth) << (array[i] ? valueWhenTrue : valueWhenFalse);
-		if ((i+1ull) % (unsigned long long)nbCol == 0ull) cout << endl;
+		// Add new line on end of row
+		if ((i + 1ull) % (unsigned long long)nbCol == 0ull && i != arrSize - 1ull)
+			cout << endl;
 	}
 }
