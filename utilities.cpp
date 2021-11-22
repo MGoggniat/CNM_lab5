@@ -21,8 +21,8 @@ Compiler      : Mingw-w64 g++ 11.1.0
 
 using namespace std;
 
-unsigned getNumberOfDigits(unsigned number){
-   return number > 0u ? unsigned( log10( double( number ) ) + 1u ) : 1u;
+unsigned getNumberOfDigits(const unsigned number){
+   return number > 0u ? unsigned(log10(double(number)) + 1u) : 1u;
 }
 
 // We could imagine an overload for other data types
