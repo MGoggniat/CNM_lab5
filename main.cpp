@@ -9,7 +9,11 @@ Description   : This programs asks the user for an amount of prime numbers to
                 find. Then, it uses the sieve of Eratosthenes to compute the
                 amount of prime numbers wanted (start from 0 -> amount). Finally,
                 it displays sieve table and the prime that have been found.
-Remark(s)     : 
+Remark(s)     : The clion console is a bit bugged and may display values
+                incorrectly, it is better to use an external console.
+                This program is meant to be use only in english, there are no
+                constants sets to facilitate potential translation.
+
  
 Compiler      : Mingw-w64 g++ 11.1.0
 -----------------------------------------------------------------------------------
@@ -29,15 +33,12 @@ using namespace std;
 int main() {
 	//---------- Variables and constants ----------
 	const unsigned MIN_PRIME_UP_TO = 2u, MAX_PRIME_UP_TO = 100u;
-	const string PROGRAM_QUIT      = "Press ENTER to quit.",
-		WELCOME_MSG       = "Hi, this program computes the sieve of "
-								  "Eratosthenes to find prime numbers. Please "
-								  "enter the numbers you want to check for prime";
 	unsigned primeNumArray[MAX_PRIME_UP_TO], numToCheckForPrime;
 	bool sieveArray[MAX_PRIME_UP_TO];
 
 	//---------- User input ----------
-	cout << WELCOME_MSG <<  "["
+	cout << "Hi, this program computes the sieve of Eratosthenes to find prime "
+	     << "numbers. Please enter the numbers you want to check for prime" <<  "["
 		  << MIN_PRIME_UP_TO << ".." << MAX_PRIME_UP_TO << "] :";
 	get_input(MIN_PRIME_UP_TO, MAX_PRIME_UP_TO, numToCheckForPrime);
 
@@ -45,7 +46,7 @@ int main() {
 	sieveRun(numToCheckForPrime, primeNumArray, sieveArray);
 
    //---------- End of program ----------
-   cout << PROGRAM_QUIT;
+   cout << "Press ENTER to quit.";
    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Empty buffer
 
    return EXIT_SUCCESS;
