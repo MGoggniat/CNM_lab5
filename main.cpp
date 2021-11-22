@@ -40,8 +40,11 @@ int main() {
 						numOfPrimeNumbers;
 	bool           sieveArray[MAX_PRIME_UP_TO];
 
-   const unsigned NB_COL      = 10u;
-   const int      COL_WIDTH   = 2;
+   const unsigned NB_COL            = 10u;
+   const int      COL_WIDTH         = 2;
+
+   const unsigned RESULT_NB_COL     = 5u;
+   const int      RESULT_COL_WIDTH  = 4;
 
 	//---------- User input ----------
 	cout << "Hi, this program computes the sieve of Eratosthenes to find prime "
@@ -73,7 +76,7 @@ int main() {
    //---------- Display the sieve results ----------
    cout << endl << numOfPrimeNumbers << " prime number(s) found up to "
         << numToCheckForPrime << endl;
-   displayArrayAsTable(primeNumArray, numOfPrimeNumbers, 5u, 4);
+   displayArrayAsTable(primeNumArray, numOfPrimeNumbers, RESULT_NB_COL, RESULT_COL_WIDTH);
    cout << endl;
 
    //---------- End of program ----------
