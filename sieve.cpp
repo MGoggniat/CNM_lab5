@@ -65,14 +65,18 @@ void sieve(bool sieveArray[], size_t sieveArraySize){
    unsigned checkNumber;
    // The number being checked if it is divisible by checkNumber
    unsigned currentNumber;
+
    for (size_t i = 0ull; i < sieveArraySize; ++i) {
       checkNumber = i+1ull;
+
+      // Each number from cheknumber to size-1 and not false will be checked
       for (size_t j = checkNumber; j < sieveArraySize && sieveArray[i]; ++j) {
          currentNumber = j+1ull;
 
          // Could not simplify this condition due to the loop resetting
-         // already ignored numbers to true
+         // already ignored numbers (false) to true
          if(currentNumber % checkNumber == 0){
+            // set to false every multiple of checkNumber
 				sieveArray[j] = false;
          }
       }
@@ -82,7 +86,7 @@ void sieve(bool sieveArray[], size_t sieveArraySize){
 unsigned extractPrimeNumbers(const bool sieveArray[], size_t sieveArraySize,
 								     unsigned primeArray[]) {
 	unsigned numOfPrimeNumbers = 0;
-
+   // TODO: Comment function
 	for (size_t i = 0ull; i < sieveArraySize; ++i) {
 		if (sieveArray[i]) {
 			primeArray[numOfPrimeNumbers++] = unsigned(i) + 1u;

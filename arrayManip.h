@@ -1,7 +1,7 @@
 /*
 -----------------------------------------------------------------------------------
 File name     : arrayManip.h
-Author(s)     : Leandro Saraiva Maia
+Author(s)     : Leandro Saraiva Maia, Miguel Jalube
 Creation date : 20.11.2021
 
 Description   : Library used to manipulate array in different ways. We can
