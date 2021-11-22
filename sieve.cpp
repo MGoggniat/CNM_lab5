@@ -22,14 +22,9 @@ using namespace std;
 
 void sieveRun(const unsigned findPrimeUpTo, unsigned primeNumArray[], bool
 sieveArray[], unsigned nbCol, int colWidth) {
-   // Check if array is not null
-   assert(primeNumArray != nullptr && sieveArray != nullptr);
-
-	const string INIT_MSG = "Table initialization";
-	const string SIEVE_START_MSG = "Sieving of the table";
-	const string RESULT_MSG_1 = "There are ";
-	const string RESULT_MSG_2 = " prime numbers up to ";
-
+	// Check if array is not null
+	assert(primeNumArray != nullptr && sieveArray != nullptr);
+		
 	//---------- Initialization ----------
 	setArrayWithAscendingOrder(primeNumArray, findPrimeUpTo, 1);
 	setAllElementsInArray(sieveArray, findPrimeUpTo, true);
@@ -50,7 +45,7 @@ sieveArray[], unsigned nbCol, int colWidth) {
 	cout << endl;
 
 	//---------- Display the sieve results ----------
-	cout << endl << RESULT_MSG_1 << numOfPrimeNumbers << RESULT_MSG_2
+	cout << endl << "There are " << numOfPrimeNumbers << " prime numbers up to "
 		  << findPrimeUpTo << endl;
 	displayArrayAsTable(primeNumArray, numOfPrimeNumbers, 5u, 4);
 	cout << endl;
