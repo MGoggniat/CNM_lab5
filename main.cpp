@@ -26,8 +26,8 @@ Compiler      : Mingw-w64 g++ 11.1.0
 #include "sieve.h"             // Prototypes
 // Note that this library uses another naming convention that we will not use here
 // (snake_case instead of camelCase)
-#include "input_validation.h"  // Required to get input
 #include "arrayManip.h"
+#include "inputValidation.h"   // Required to get input
 
 using namespace std;
 
@@ -47,7 +47,7 @@ int main() {
 	     << "numbers." << endl << "Please enter the numbers you want to check for"
         << "prime [" << MIN_PRIME_UP_TO << ".." << MAX_PRIME_UP_TO << "] :";
    // TODO: change everything
-	numToCheckForPrime = get_input(MIN_PRIME_UP_TO, MAX_PRIME_UP_TO);
+	numToCheckForPrime = getInput(MIN_PRIME_UP_TO, MAX_PRIME_UP_TO);
 
    //---------- Initialization ----------
    setArrayWithAscendingOrder(primeNumArray, numToCheckForPrime, 1);
