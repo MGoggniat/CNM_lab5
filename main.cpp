@@ -26,13 +26,14 @@ Compiler      : Mingw-w64 g++ 11.1.0
 #include "sieve.h"             // Prototypes for the sieving functions
 #include "arrayManip.h"        // Prototypes for the array manipulations
 #include "inputValidation.h"   // Required to get input
+#include "utilities.h"         // Required to calculate number of digits
 
 using namespace std;
 
 int main() {
 	//---------- Variables and constants ----------
 	const unsigned MIN_PRIME_UP_TO = 2u,
-                  MAX_PRIME_UP_TO = 100u;    // must be <= 100000
+                  MAX_PRIME_UP_TO = 10000u;    // must be <= 100000
    const char     VALUE_FALSE     = 'X',
                   VALUE_TRUE      = 'O';
 	unsigned       primeNumArray[MAX_PRIME_UP_TO],
@@ -44,7 +45,6 @@ int main() {
    const int      COL_WIDTH         = 2;
 
    const unsigned RESULT_NB_COL     = 5u;
-   const int      RESULT_COL_WIDTH  = 4;
 
 	//---------- User input ----------
 	cout << "Hi, this program computes the sieve of Eratosthenes to find prime "
@@ -76,7 +76,8 @@ int main() {
    //---------- Display the sieve results ----------
    cout << endl << numOfPrimeNumbers << " prime number(s) found up to "
         << numToCheckForPrime << endl;
-   displayArrayAsTable(primeNumArray, numOfPrimeNumbers, RESULT_NB_COL, RESULT_COL_WIDTH);
+   displayArrayAsTable(primeNumArray, numOfPrimeNumbers,
+                       RESULT_NB_COL, getNumberOfDigits(MAX_PRIME_UP_TO));
    cout << endl;
 
    //---------- End of program ----------
