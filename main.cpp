@@ -24,7 +24,6 @@ Compiler      : Mingw-w64 g++ 11.1.0
 #include <limits>              // Required for numeric_limits<...>
 #include <string>              // Required for the use of strings
 #include "sieve.h"             // Prototypes for the sieving functions
-#include "arrayManip.h"        // Prototypes for the array manipulations
 #include "inputValidation.h"   // Required to get input
 #include "utilities.h"         // Required to calculate number of digits
 
@@ -77,7 +76,7 @@ int main() {
    cout << endl << numOfPrimeNumbers << " prime number(s) found up to "
         << numToCheckForPrime << endl;
    displayArrayAsTable(primeNumArray, numOfPrimeNumbers,
-                       RESULT_NB_COL, getNumberOfDigits(MAX_PRIME_UP_TO));
+                       RESULT_NB_COL, int(getNumberOfDigits(MAX_PRIME_UP_TO)));
    cout << endl;
 
    //---------- End of program ----------
