@@ -12,28 +12,26 @@ Compiler      : Mingw-w64 g++ 11.1.0
 */
 
 #include <iomanip>       // Required for setw
-#include <iostream>      // Required for cout
-#include <string>        // Required for const msgs
 #include <cassert>       // Required for asserts
 #include "sieve.h"       // Prototypes
-#include "arrayManip.h"  // Required to set bool table to true
 
 using namespace std;
 
 void sieve(bool sieveArray[], size_t sieveArraySize){
    // Check if array is not null
    assert(sieveArray != nullptr && sieveArray != nullptr);
-	sieveArray[0] = false; // We set 1 as not a prime number
+	sieveArray[0] = false; // Set 1 as not a prime number
 
    // The number for who we are searching for multiples
    unsigned checkNumber;
-   // The number being checked if it is divisible by checkNumber
+   // The number being checked if it's divisible by checkNumber
    unsigned currentNumber;
 
    for (size_t i = 0ull; i < sieveArraySize; ++i) {
       checkNumber = i+1ull;
 
-      // Each number from cheknumber to size-1 and not false will be checked
+      // Each number from chekNumber to size-1 and where sieveArray[i] is true will
+      // be checked, so only prime numbers can enter this loop.
       for (size_t j = checkNumber; j < sieveArraySize && sieveArray[i]; ++j) {
          currentNumber = j+1ull;
 

@@ -11,7 +11,7 @@ Description   : This programs asks the user for an amount of prime numbers to
                 it displays sieve table and the prime that have been found.
 Remark(s)     : The clion console is a bit bugged and may display values
                 incorrectly, it is better to use an external console.
-                This program is meant to be use only in english, there are no
+                This program is meant to be used only in english, there are no
                 constants sets to facilitate potential translation.
 
  
@@ -23,10 +23,8 @@ Compiler      : Mingw-w64 g++ 11.1.0
 #include <iostream>            // Required for cout
 #include <limits>              // Required for numeric_limits<...>
 #include <string>              // Required for the use of strings
-#include "sieve.h"             // Prototypes
-// Note that this library uses another naming convention that we will not use here
-// (snake_case instead of camelCase)
-#include "arrayManip.h"
+#include "sieve.h"             // Prototypes for the sieving functions
+#include "arrayManip.h"        // Prototypes for the array manipulations
 #include "inputValidation.h"   // Required to get input
 
 using namespace std;
@@ -34,7 +32,9 @@ using namespace std;
 int main() {
 	//---------- Variables and constants ----------
 	const unsigned MIN_PRIME_UP_TO = 2u,
-                  MAX_PRIME_UP_TO = 100u;
+                  MAX_PRIME_UP_TO = 100u;    // must be <= 100000
+   const char     VALUE_FALSE     = 'X',
+                  VALUE_TRUE      = 'O';
 	unsigned       primeNumArray[MAX_PRIME_UP_TO],
                   numToCheckForPrime;
 	bool           sieveArray[MAX_PRIME_UP_TO];
@@ -55,7 +55,8 @@ int main() {
 
    //---------- Display empty sieve table ----------
    cout << endl << "Table initialization : " << endl;
-   displayArrayAsTable(sieveArray, numToCheckForPrime, NB_COL, COL_WIDTH, 'X', 'O');
+   displayArrayAsTable(sieveArray, numToCheckForPrime, NB_COL, COL_WIDTH,
+                       VALUE_FALSE, VALUE_TRUE);
    cout << endl;
 
    //---------- Computes prime numbers with Eratosthenes sieve ----------
@@ -65,7 +66,8 @@ int main() {
 
    //---------- Display the sieve table ----------
    cout << endl << "Sieving of the table : " << endl;
-   displayArrayAsTable(sieveArray, numToCheckForPrime, NB_COL, COL_WIDTH, 'X', 'O');
+   displayArrayAsTable(sieveArray, numToCheckForPrime, NB_COL, COL_WIDTH,
+                       VALUE_FALSE, VALUE_TRUE);
    cout << endl;
 
    //---------- Display the sieve results ----------
