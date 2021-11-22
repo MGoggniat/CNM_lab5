@@ -13,7 +13,6 @@ Remark(s)     : The clion console is a bit bugged and may display values
                 incorrectly, it is better to use an external console.
                 This program is meant to be use only in english, there are no
                 constants sets to facilitate potential translation.
-
  
 Compiler      : Mingw-w64 g++ 11.1.0
 -----------------------------------------------------------------------------------
@@ -24,9 +23,7 @@ Compiler      : Mingw-w64 g++ 11.1.0
 #include <limits>              // Required for numeric_limits<...>
 #include <string>              // Required for the use of strings
 #include "sieve.h"             // Prototypes
-// Note that this library uses another naming convention that we will not use here
-// (snake_case instead of camelCase)
-#include "input_validation.h"  // Required to get input
+#include "inputValidation.h"   // Required to get input
 
 using namespace std;
 
@@ -43,7 +40,7 @@ int main() {
 	     << "numbers." << endl << "Please enter the numbers you want to check for"
         << "prime [" << MIN_PRIME_UP_TO << ".." << MAX_PRIME_UP_TO << "] :";
    // TODO: change everything
-	numToCheckForPrime = get_input(MIN_PRIME_UP_TO, MAX_PRIME_UP_TO);
+	numToCheckForPrime = getInput(MIN_PRIME_UP_TO, MAX_PRIME_UP_TO);
 
 	//---------- Compute and display result of the sieve of Eratosthenes ----------
 	sieveRun(numToCheckForPrime, primeNumArray, sieveArray);
