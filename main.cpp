@@ -40,7 +40,7 @@ int main() {
 	cout << "Hi, this program computes the sieve of Eratosthenes to find prime "
 	     << "numbers. Please enter the numbers you want to check for prime" <<  "["
 		  << MIN_PRIME_UP_TO << ".." << MAX_PRIME_UP_TO << "] :";
-	get_input(MIN_PRIME_UP_TO, MAX_PRIME_UP_TO, numToCheckForPrime);
+	numToCheckForPrime = get_input(MIN_PRIME_UP_TO, MAX_PRIME_UP_TO);
 
 	//---------- Compute and display result of the sieve of Eratosthenes ----------
 	sieveRun(numToCheckForPrime, primeNumArray, sieveArray);
