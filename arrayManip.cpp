@@ -1,7 +1,7 @@
 /*
 -----------------------------------------------------------------------------------
 File name     : arrayManip.cpp
-Author(s)     : Leandro Saraiva Maia
+Author(s)     : Leandro Saraiva Maia, Miguel Jalube
 Creation date : 20.11.2021
 
 Description   : See header comment of the .h file
@@ -24,7 +24,6 @@ void setAllElementsInArray(bool arrayToSet[], size_t arrSize, bool defaultValue)
    // Check if array is not null
    assert(arrayToSet != nullptr);
 	for (size_t i = 0ull; i < arrSize; ++i) {
-
 		arrayToSet[i] = defaultValue;
 	}
 }
