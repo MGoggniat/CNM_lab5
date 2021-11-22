@@ -18,12 +18,12 @@ using namespace std;
 
 unsigned getInput(const unsigned min, const unsigned max) {
 	bool     error;
-	unsigned user_input;
+	unsigned userInput;
 
 	do {
-		cin >> user_input;
+		cin >> userInput;
 
-		error = cin.fail() || user_input < min || user_input > max;
+		error = cin.fail() || userInput < min || userInput > max;
 		if (error) {
 			cout << "Please only enter a number between "
 			     << min << " and " << max << endl;
@@ -34,5 +34,5 @@ unsigned getInput(const unsigned min, const unsigned max) {
 
 	} while(error);
 
-	return user_input;
+	return userInput;
 }
