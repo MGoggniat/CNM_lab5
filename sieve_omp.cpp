@@ -26,7 +26,8 @@ Compiler      : Mingw-w64 g++ 11.1.0
 #include <iomanip>   
 #include <cassert>   
 #include <cmath>     
-#include <time.h>              
+#include <time.h>
+#include <omp.h>           
 
 using namespace std;
 
@@ -42,17 +43,20 @@ unsigned long long extractPrimeNumbers(const bool sieveArray[], size_t sieveArra
 								     unsigned long long primeArray[]);
 
 int main(int argc, char* argv[]) {
+
    clock_t start_time = clock();
 
 	//---------- Variables and constants ----------
-	const unsigned long long   MIN_PRIME_UP_TO =                2ull;
-   const unsigned long long   MAX_PRIME_UP_TO =                100000ull; // >100000 may cause memory issues
+	const unsigned long long   MIN_PRIME_UP_TO =                2;
+   const unsigned long long   MAX_PRIME_UP_TO =                100000; // >100000 may cause memory issues
    const unsigned             RESULT_NB_COL =                  20u;
 	unsigned long long         primeNumArray[MAX_PRIME_UP_TO];
    unsigned long long         numToCheckForPrime;
 	unsigned long long         numOfPrimeNumbers;
 	bool                       sieveArray[MAX_PRIME_UP_TO];
+   const unsigned             NUM_THREADS =                    1;
 
+   omp_set_num_threads(NUM_THREADS);
 
    if(argc != 2 || stoull(argv[1]) < MIN_PRIME_UP_TO || stoull(argv[1]) > MAX_PRIME_UP_TO){
       cout << "Usage : ./sieve <number>" << endl;
@@ -96,24 +100,24 @@ int main(int argc, char* argv[]) {
 }
 
 unsigned getNumberOfDigits(const unsigned long long number){
-   return number > 0ull ? unsigned(log10(double(number))) + 1ull : 1ull;
+   return number > 0 ? unsigned(log10(double(number))) + 1 : 1;
 }
 
 // We could imagine an overload for other data types
 void setAllElementsInArray(bool arrayToSet[], const size_t arrSize,
                            const bool defaultValue) {
-   // Check if array is not null
+   // Check if array is not n
    assert(arrayToSet != nullptr);
-   for (size_t i = 0ull; i < arrSize; ++i) {
+   for (size_t i = 0; i < arrSize; ++i) {
       arrayToSet[i] = defaultValue;
    }
 }
 
 void setArrayWithAscendingOrder(unsigned long long arrayToSet[], const size_t arrSize,
-                                const size_t startsAt = 0ull) {
-   // Check if array is not null
+                                const size_t startsAt = 0) {
+   // Check if array is not n
    assert(arrayToSet != nullptr);
-   for (size_t i = 0ull; i < arrSize; ++i) {
+   for (size_t i = 0; i < arrSize; ++i) {
       arrayToSet[i] = i + startsAt;
    }
 }
@@ -121,9 +125,9 @@ void setArrayWithAscendingOrder(unsigned long long arrayToSet[], const size_t ar
 void displayArrayAsTable(const unsigned long long array[], const size_t arrSize,
                          const unsigned nbCol, const int colWidth) {
    assert(array != nullptr);
-   for (size_t i = 0ull; i < arrSize; ++i) {
+   for (size_t i = 0; i < arrSize; ++i) {
       cout << setw(colWidth) << array[i];
-      if ((i + 1ull) % (unsigned long long)nbCol == 0ull && i != arrSize - 1ull)
+      if ((i + 1) % (unsigned long long)nbCol == 0 && i != arrSize - 1)
          cout << endl;
    }
 }
@@ -132,9 +136,9 @@ void displayArrayAsTable(const bool array[], const unsigned long arrSize,
                          const unsigned nbCol, const int colWidth,
                          const char valueWhenFalse, const char valueWhenTrue) {
    assert(array != nullptr);
-   for (size_t i = 0ull; i < arrSize; ++i) {
+   for (size_t i = 0; i < arrSize; ++i) {
       cout << setw(colWidth) << (array[i] ? valueWhenTrue : valueWhenFalse);
-      if ((i + 1ull) % (unsigned long long)nbCol == 0ull && i != arrSize - 1ull)
+      if ((i + 1) % (unsigned long long)nbCol == 0 && i != arrSize - 1)
          cout << endl;
    }
 }
@@ -142,27 +146,26 @@ void displayArrayAsTable(const bool array[], const unsigned long arrSize,
 void sieve(bool sieveArray[], size_t sieveArraySize){
    assert(sieveArray != nullptr && sieveArray != nullptr);
 	sieveArray[0] = false;
-   unsigned long long checkNumber;
    unsigned long long currentNumber;
 
-   for (size_t i = 0ull; i < sieveArraySize; ++i) {
-      checkNumber = i + 1ull;
-
-      for (size_t j = checkNumber; j < sieveArraySize && sieveArray[i]; ++j) {
-         currentNumber = j + 1ull;
-         if(currentNumber % checkNumber == 0ull){
+   #pragma omp parallel for schedule(dynamic)
+   for (size_t i = 0; i < sieveArraySize; ++i) {
+      for (size_t j = i + 1; j < sieveArraySize && sieveArray[i]; ++j) {
+         currentNumber = j + 1;
+         if(currentNumber % (i + 1) == 0){
 			   sieveArray[j] = false;
          }
       }
    }
+
 }
 
 unsigned long long extractPrimeNumbers(const bool sieveArray[], size_t sieveArraySize,
 								     unsigned long long primeArray[]) {
-	unsigned long long numOfPrimeNumbers = 0ull;
-	for (size_t i = 0ull; i < sieveArraySize; ++i) {
+	unsigned long long numOfPrimeNumbers = 0;
+	for (size_t i = 0; i < sieveArraySize; ++i) {
 		if (sieveArray[i]) {
-			primeArray[numOfPrimeNumbers++] = i + 1ull;
+			primeArray[numOfPrimeNumbers++] = i + 1;
 		}
 	}
 
