@@ -54,7 +54,7 @@ int main(int argc, char* argv[]) {
    unsigned long long         numToCheckForPrime;
 	unsigned long long         numOfPrimeNumbers;
 	bool                       sieveArray[MAX_PRIME_UP_TO];
-   const unsigned             NUM_THREADS =                    1;
+   const unsigned             NUM_THREADS =                    4;
 
    omp_set_num_threads(NUM_THREADS);
 
@@ -146,13 +146,15 @@ void displayArrayAsTable(const bool array[], const unsigned long arrSize,
 void sieve(bool sieveArray[], size_t sieveArraySize){
    assert(sieveArray != nullptr && sieveArray != nullptr);
 	sieveArray[0] = false;
+   unsigned long long checkNumber;
    unsigned long long currentNumber;
 
    #pragma omp parallel for schedule(dynamic)
    for (size_t i = 0; i < sieveArraySize; ++i) {
-      for (size_t j = i + 1; j < sieveArraySize && sieveArray[i]; ++j) {
+      checkNumber = i + 1;
+      for (size_t j = checkNumber; j < sieveArraySize && sieveArray[i]; ++j) {
          currentNumber = j + 1;
-         if(currentNumber % (i + 1) == 0){
+         if(currentNumber % (checkNumber) == 0){
 			   sieveArray[j] = false;
          }
       }
