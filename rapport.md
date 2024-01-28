@@ -17,7 +17,7 @@ The algorithm is based on the Sieve of Eratosthenes algorithm. The algorithm is 
 ## Optimizations
 ### Unoptimized version
 
-First of all to find what was the bottleneck of the algorithm, we cut the program in different phases ans measured the time of each phase :
+First of all to find what was the bottleneck of the algorithm, we cut the program in different phases and measured the time of each phase :
 
 - Init phase : Here every array and variable is initialized.
 - Sieve phase : Here the algorithm is executed.
@@ -123,9 +123,53 @@ Total time :    2.244221
 The next step was to parallelize the sieve phase using CUDA. To do so we had to copy the array to the GPU, execute the algorithm on the GPU and then copy the array back to the CPU. The code of the kernel is shown below:
 
 ```cpp
+__global__ void kernel(size_t sieveArraySize, bool *sieveArray) {
 
-// TODO : Add CUDA optimized sieve here
+   unsigned int thread_id = threadIdx.x;
 
+   __shared__ bool sharedSieveArray[SHARE_MEMORY_SIZE];
+
+   // défini le nombre d'itération du crible d'hératostène
+   int threadRangeNb = (sieveArraySize + blockDim.x - 1) / blockDim.x;
+
+   // défini la quantité de nombre que le bloc va vérifier (doit être )
+   int blockRangeNb = (sieveArraySize + gridDim.x - 1) / gridDim.x;
+   assert(SHARE_MEMORY_SIZE >= blockRangeNb);
+
+   // Tous les nombres sont initialisé comme premiers 
+   for (int i = 0; i < blockRangeNb; ++i) {
+      sharedSieveArray[i] = true;
+   }
+
+   __syncthreads();
+   
+   // Pour toute les itérations du crible de ce treads
+   for (int i = 0; i < threadRangeNb; ++i) {
+
+      //nombre de l'itéreation du crible
+      int n = threadRangeNb * thread_id + i + 1;
+
+      if(n == 1){
+         // il ne faut pas tenter de diviser les nombres par 1
+         continue;
+      }else if (n < sieveArraySize) { // pourrait être opimisé en remplacant par racine de n mais nous gardons la structure originale du code
+
+         // itére uniquement sur les nombres du bloc
+         for (size_t j = max(n, blockIdx.x * blockRangeNb); j < min((size_t)(blockRangeNb * (blockIdx.x+1)), sieveArraySize); ++j) {
+            // retires les nombres qui ne sont pas premiers
+            if((j + 1ull) % n == 0ull){
+               sharedSieveArray[j-blockIdx.x * blockRangeNb] = false;
+            }
+         }
+      }
+   }
+   __syncthreads();
+
+   // copie les nombres depuis la mémoire partagée
+   for (int i = blockIdx.x * blockRangeNb; i < (blockIdx.x+1) * blockRangeNb; ++i) {
+      sieveArray[i] = sharedSieveArray[i-blockIdx.x * blockRangeNb];
+   }
+}
 ```
 
 The results obtained with CUDA parallelization are 97.42% faster than the single threaded solution. The results are shown below:

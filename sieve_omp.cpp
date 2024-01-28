@@ -145,20 +145,21 @@ void displayArrayAsTable(const bool array[], const unsigned long arrSize,
 }
 
 void sieve(bool sieveArray[], size_t sieveArraySize){
-   assert(sieveArray != nullptr && sieveArray != nullptr);
-	sieveArray[0] = false;
+    assert(sieveArray != nullptr && sieveArray != nullptr);
+    sieveArray[0] = false;
+    unsigned long long checkNumber;
+    unsigned long long currentNumber;
 
-   #pragma omp parallel for
-   for (size_t i = 0ull; i < sieveArraySize; ++i) {
-      unsigned long long checkNumber = i + 1;
-      for (size_t j = checkNumber; j < sieveArraySize; ++j) {
-         if(!sieveArray[i]){break;}
-         unsigned long long currentNumber = j + 1ull;
-         if((currentNumber % checkNumber) == 0ull){
-            sieveArray[j] = false;
-         }
-      }
-   }
+    #pragma omp parallel for schedule(dynamic)
+    for (size_t i = 0; i < sieveArraySize; ++i) {
+        checkNumber = i + 1;
+        for (size_t j = checkNumber; j < sieveArraySize && sieveArray[i]; ++j) {
+            currentNumber = j + 1;
+            if(currentNumber % (checkNumber) == 0){
+                sieveArray[j] = false;
+            }
+        }
+    }
 }
 
 unsigned long long extractPrimeNumbers(const bool sieveArray[], size_t sieveArraySize,
