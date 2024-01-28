@@ -54,7 +54,7 @@ int main(int argc, char* argv[]) {
    unsigned long long         numToCheckForPrime;
 	unsigned long long         numOfPrimeNumbers;
 	bool                       sieveArray[MAX_PRIME_UP_TO];
-   const unsigned             NUM_THREADS =                    4;
+   const unsigned             NUM_THREADS =                    1;
 
    omp_set_num_threads(NUM_THREADS);
 
@@ -90,6 +90,7 @@ int main(int argc, char* argv[]) {
 
    //---------- Display time measures --------------
    printf("============= Time measures ===============\n");
+   printf("For %d threads\n", NUM_THREADS);
    printf("Init time :     %f\n", (double)(init_time - start_time) / CLOCKS_PER_SEC);
    printf("Sieve time :    %f\n", (double)(sieve_time - init_time) / CLOCKS_PER_SEC);
    printf("Extract time :  %f\n", (double)(extract_time - sieve_time) / CLOCKS_PER_SEC);
@@ -146,20 +147,18 @@ void displayArrayAsTable(const bool array[], const unsigned long arrSize,
 void sieve(bool sieveArray[], size_t sieveArraySize){
    assert(sieveArray != nullptr && sieveArray != nullptr);
 	sieveArray[0] = false;
-   unsigned long long checkNumber;
-   unsigned long long currentNumber;
 
-   #pragma omp parallel for schedule(dynamic)
-   for (size_t i = 0; i < sieveArraySize; ++i) {
-      checkNumber = i + 1;
-      for (size_t j = checkNumber; j < sieveArraySize && sieveArray[i]; ++j) {
-         currentNumber = j + 1;
-         if(currentNumber % (checkNumber) == 0){
-			   sieveArray[j] = false;
+   #pragma omp parallel for
+   for (size_t i = 0ull; i < sieveArraySize; ++i) {
+      unsigned long long checkNumber = i + 1;
+      for (size_t j = checkNumber; j < sieveArraySize; ++j) {
+         if(!sieveArray[i]){break;}
+         unsigned long long currentNumber = j + 1ull;
+         if((currentNumber % checkNumber) == 0ull){
+            sieveArray[j] = false;
          }
       }
    }
-
 }
 
 unsigned long long extractPrimeNumbers(const bool sieveArray[], size_t sieveArraySize,

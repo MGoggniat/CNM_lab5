@@ -21,13 +21,17 @@ Compiler      : Mingw-w64 g++ 11.1.0
 
 #include <cstdlib>   
 #include <iostream>  
-#include <limits>    
+#include <limits>
 #include <string>    
 #include <iomanip>   
 #include <cassert>   
 #include <cmath>     
 #include <time.h>
-#include <omp.h>           
+#include <cuda_runtime.h>
+
+// taille du tableau = quantité de nombre que le bloc peut vérifier si il est prmier ou non 
+// Ne pas dépasser 40000 car il y a une limite à la mémoire partagée par bloc
+#define SHARE_MEMORY_SIZE 40000
 
 using namespace std;
 
@@ -43,20 +47,17 @@ unsigned long long extractPrimeNumbers(const bool sieveArray[], size_t sieveArra
 								     unsigned long long primeArray[]);
 
 int main(int argc, char* argv[]) {
-
    clock_t start_time = clock();
 
 	//---------- Variables and constants ----------
-	const unsigned long long   MIN_PRIME_UP_TO =                2;
-   const unsigned long long   MAX_PRIME_UP_TO =                100000; // >100000 may cause memory issues
+	const unsigned long long   MIN_PRIME_UP_TO =                2ull;
+   const unsigned long long   MAX_PRIME_UP_TO =                100000ull; // >100000 may cause memory issues
    const unsigned             RESULT_NB_COL =                  20u;
 	unsigned long long         primeNumArray[MAX_PRIME_UP_TO];
    unsigned long long         numToCheckForPrime;
 	unsigned long long         numOfPrimeNumbers;
 	bool                       sieveArray[MAX_PRIME_UP_TO];
-   const unsigned             NUM_THREADS =                    1;
 
-   omp_set_num_threads(NUM_THREADS);
 
    if(argc != 2 || stoull(argv[1]) < MIN_PRIME_UP_TO || stoull(argv[1]) > MAX_PRIME_UP_TO){
       cout << "Usage : ./sieve <number>" << endl;
@@ -90,7 +91,6 @@ int main(int argc, char* argv[]) {
 
    //---------- Display time measures --------------
    printf("============= Time measures ===============\n");
-   printf("For %d threads\n", NUM_THREADS);
    printf("Init time :     %f\n", (double)(init_time - start_time) / CLOCKS_PER_SEC);
    printf("Sieve time :    %f\n", (double)(sieve_time - init_time) / CLOCKS_PER_SEC);
    printf("Extract time :  %f\n", (double)(extract_time - sieve_time) / CLOCKS_PER_SEC);
@@ -101,24 +101,24 @@ int main(int argc, char* argv[]) {
 }
 
 unsigned getNumberOfDigits(const unsigned long long number){
-   return number > 0 ? unsigned(log10(double(number))) + 1 : 1;
+   return number > 0ull ? unsigned(log10(double(number))) + 1ull : 1ull;
 }
 
 // We could imagine an overload for other data types
 void setAllElementsInArray(bool arrayToSet[], const size_t arrSize,
                            const bool defaultValue) {
-   // Check if array is not n
+   // Check if array is not null
    assert(arrayToSet != nullptr);
-   for (size_t i = 0; i < arrSize; ++i) {
+   for (size_t i = 0ull; i < arrSize; ++i) {
       arrayToSet[i] = defaultValue;
    }
 }
 
 void setArrayWithAscendingOrder(unsigned long long arrayToSet[], const size_t arrSize,
-                                const size_t startsAt = 0) {
-   // Check if array is not n
+                                const size_t startsAt = 0ull) {
+   // Check if array is not null
    assert(arrayToSet != nullptr);
-   for (size_t i = 0; i < arrSize; ++i) {
+   for (size_t i = 0ull; i < arrSize; ++i) {
       arrayToSet[i] = i + startsAt;
    }
 }
@@ -126,9 +126,9 @@ void setArrayWithAscendingOrder(unsigned long long arrayToSet[], const size_t ar
 void displayArrayAsTable(const unsigned long long array[], const size_t arrSize,
                          const unsigned nbCol, const int colWidth) {
    assert(array != nullptr);
-   for (size_t i = 0; i < arrSize; ++i) {
+   for (size_t i = 0ull; i < arrSize; ++i) {
       cout << setw(colWidth) << array[i];
-      if ((i + 1) % (unsigned long long)nbCol == 0 && i != arrSize - 1)
+      if ((i + 1ull) % (unsigned long long)nbCol == 0ull && i != arrSize - 1ull)
          cout << endl;
    }
 }
@@ -137,36 +137,93 @@ void displayArrayAsTable(const bool array[], const unsigned long arrSize,
                          const unsigned nbCol, const int colWidth,
                          const char valueWhenFalse, const char valueWhenTrue) {
    assert(array != nullptr);
-   for (size_t i = 0; i < arrSize; ++i) {
+   for (size_t i = 0ull; i < arrSize; ++i) {
       cout << setw(colWidth) << (array[i] ? valueWhenTrue : valueWhenFalse);
-      if ((i + 1) % (unsigned long long)nbCol == 0 && i != arrSize - 1)
+      if ((i + 1ull) % (unsigned long long)nbCol == 0ull && i != arrSize - 1ull)
          cout << endl;
    }
 }
 
-void sieve(bool sieveArray[], size_t sieveArraySize){
-   assert(sieveArray != nullptr && sieveArray != nullptr);
-	sieveArray[0] = false;
+__global__ void kernel(size_t sieveArraySize, bool *sieveArray) {
 
-   #pragma omp parallel for
-   for (size_t i = 0ull; i < sieveArraySize; ++i) {
-      unsigned long long checkNumber = i + 1;
-      for (size_t j = checkNumber; j < sieveArraySize; ++j) {
-         if(!sieveArray[i]){break;}
-         unsigned long long currentNumber = j + 1ull;
-         if((currentNumber % checkNumber) == 0ull){
-            sieveArray[j] = false;
+   unsigned int thread_id = threadIdx.x;
+
+   __shared__ bool sharedSieveArray[SHARE_MEMORY_SIZE];
+
+   // défini le nombre d'itération du crible d'hératostène
+   int threadRangeNb = (sieveArraySize + blockDim.x - 1) / blockDim.x;
+
+   // défini la quantité de nombre que le bloc va vérifier (doit être )
+   int blockRangeNb = (sieveArraySize + gridDim.x - 1) / gridDim.x;
+   assert(SHARE_MEMORY_SIZE >= blockRangeNb);
+
+   // Tous les nombres sont initialisé comme premiers 
+   for (int i = 0; i < blockRangeNb; ++i) {
+      sharedSieveArray[i] = true;
+   }
+
+   __syncthreads();
+   
+   // Pour toute les itérations du crible de ce treads
+   for (int i = 0; i < threadRangeNb; ++i) {
+
+      //nombre de l'itéreation du crible
+      int n = threadRangeNb * thread_id + i + 1;
+
+      if(n == 1){
+         // il ne faut pas tenter de diviser les nombres par 1
+         continue;
+      }else if (n < sieveArraySize) { // pourrait être opimisé en remplacant par racine de n mais nous gardons la structure originale du code
+
+         // itére uniquement sur les nombres du bloc
+         for (size_t j = max(n, blockIdx.x * blockRangeNb); j < min((size_t)(blockRangeNb * (blockIdx.x+1)), sieveArraySize); ++j) {
+            // retires les nombres qui ne sont pas premiers
+            if((j + 1ull) % n == 0ull){
+               sharedSieveArray[j-blockIdx.x * blockRangeNb] = false;
+            }
          }
       }
    }
+   __syncthreads();
+
+   // copie les nombres depuis la mémoire partagée
+   for (int i = blockIdx.x * blockRangeNb; i < (blockIdx.x+1) * blockRangeNb; ++i) {
+      sieveArray[i] = sharedSieveArray[i-blockIdx.x * blockRangeNb];
+   }
+}
+
+
+
+
+
+void sieve(bool sieveArray[], size_t sieveArraySize){
+
+   // 1 n'est pas premier
+   sieveArray[0] = false;
+
+   assert(sieveArray != nullptr && sieveArray != nullptr);
+
+   size_t size = sieveArraySize * sizeof(bool);
+
+   bool *d_sieveArray;
+   cudaMalloc((void **)&d_sieveArray, size);
+
+   int blockSize = 256;
+   int numBlocks = 4; // attention (sieveArray / numBlocks) doiit être supérieur à 40000 sinon problème de mémoire sur la gpu
+
+   kernel<<<numBlocks, blockSize>>>(sieveArraySize, d_sieveArray);
+
+   cudaMemcpy(sieveArray, d_sieveArray, size, cudaMemcpyDeviceToHost);
+   
+   cudaFree(d_sieveArray);
 }
 
 unsigned long long extractPrimeNumbers(const bool sieveArray[], size_t sieveArraySize,
 								     unsigned long long primeArray[]) {
-	unsigned long long numOfPrimeNumbers = 0;
-	for (size_t i = 0; i < sieveArraySize; ++i) {
+	unsigned long long numOfPrimeNumbers = 0ull;
+	for (size_t i = 0ull; i < sieveArraySize; ++i) {
 		if (sieveArray[i]) {
-			primeArray[numOfPrimeNumbers++] = i + 1;
+			primeArray[numOfPrimeNumbers++] = i + 1ull;
 		}
 	}
 
